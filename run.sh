@@ -9,7 +9,7 @@ percentile_list=1.0:25.0:50.0:75.0:90.0:99.0:99.9:99.99:99.999:99.9999:99.99999:
 cpus_allowed=
 numjobs=0
 
-# Can be passed-in in
+# Can be passed-in
 bs=${bs:-4k}
 iodepth=${iodepth:-64}
 name=${name:+_$name}
@@ -17,8 +17,6 @@ name=${name:+_$name}
 
 # Validate and discover interrupt affinities
 [ -b $filename ] || exit 1
-
-#tmpfile=$(mktemp /tmp/fio-script.XXXXXX)
 
 output=$(awk -v pattern="nvme${nvme_ctrl}q" '$0~pattern {
 	gsub(":","")
@@ -34,6 +32,7 @@ output=$(awk -v pattern="nvme${nvme_ctrl}q" '$0~pattern {
 	printf "irq[%s]: %s: affinity[%s] effective[%s] node[%u]\n",
 		irq, name, smp, eff, node
 }' /proc/interrupts | column -t)
+
 while read line; do
 	if [[ "$line" == *"nvme${nvme_ctrl}q0"* ]]; then
 		continue
