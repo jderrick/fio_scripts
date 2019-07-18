@@ -2,7 +2,6 @@ nvme_ctrl=0
 nvme_ns=1
 
 engine=libaio
-rw=randread
 runtime=300
 filename=/dev/nvme${nvme_ctrl}n${nvme_ns}
 percentile_list=1.0:25.0:50.0:75.0:90.0:99.0:99.9:99.99:99.999:99.9999:99.99999:99.999999:100.0
@@ -12,6 +11,7 @@ numjobs=0
 # Can be passed-in
 bs=${bs:-4k}
 iodepth=${iodepth:-64}
+rw=${rw:-randread}
 name=${name:+_$name}
 
 
