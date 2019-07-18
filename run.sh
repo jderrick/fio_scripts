@@ -81,7 +81,7 @@ command="fio \
 echo "Logging to $runlog"
 echo -e "$output\n" > $runlog
 echo "Command:" >> $runlog
-echo -e "${command// / '\\''\n'}\n" >> $runlog
+echo -e "${command// / '\\''\n'}\n" | tee -a $runlog
 echo "One Line:" >> $runlog
-echo -e "$command\n" | tee -a $runlog
+echo -e "$command\n" >> $runlog
 $command | tee -a $runlog
