@@ -1,7 +1,9 @@
+./setup_perf.sh
+
 nvme_ctrl=0
 nvme_ns=1
 
-engine="pvsync2"
+engine="libaio"
 runtime=300
 filename=/dev/nvme${nvme_ctrl}n${nvme_ns}
 percentile_list=1.0:25.0:50.0:75.0:90.0:99.0:99.9:99.99:99.999:99.9999:99.99999:99.999999:100.0
@@ -53,19 +55,18 @@ runlog=${logprefix}_run.log
 
 command="fio \
 --ioengine=${engine} \
---hipri \
 --direct=1 \
 --buffered=0 \
 --size=100% \
 --time_based \
 --norandommap \
 --ramp_time=0 \
---refill_buffers \
 --log_avg_msec=1000 \
 --log_max_value=1 \
 --group_reporting \
 --percentile_list=${percentile_list} \
 --filename=${filename} \
+--nice=-15 \
 --name=${runname} \
 --stonewall \
 --bs=${bs} \
